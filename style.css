@@ -20,19 +20,6 @@ html {
   }
 }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 500px;
-}
-
-button {
-  background-color: cornflowerblue;
-  padding: 4px 45px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  height: 100px;
-  cursor: pointer;
+h1 {
+  color: palevioletred;
 }
