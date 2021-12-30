@@ -20,6 +20,15 @@ html {
   }
 }
 
-h1 {
-  color: palevioletred;
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div {
+  background-color: red;
+  width: 100px;
+  height: 100px;
 }
