@@ -16,40 +16,47 @@ let booksDisplay = document.querySelector(".BooksDisplay");
 let myLibrary = [];
 let book1 = new Book("harry Potter", "JK Rollings", 21, true);
 let book2 = new Book("The hobbit", "J. R. R. Tolkien", 45, true);
-
 myLibrary.push(book1);
-AddBooksToDisplay(book1, 0);
+AddBookToLibrary(book1, 0);
 myLibrary.push(book2);
-AddBooksToDisplay(book2, 1);
+AddBookToLibrary(book2, 1);
 
 function makeChangeReadStatusButton(displaybook, index) {
   let changeReadStatusButton = document.createElement("button");
   changeReadStatusButton.textContent = "change Read Status";
+  changeReadStatusButton.setAttribute("bookIndex", index);
   changeReadStatusButton.addEventListener("click", () => {
-    myLibrary[index].changeReadStatus();
+    myLibrary[
+      changeReadStatusButton.getAttribute("bookIndex")
+    ].changeReadStatus();
+    let newState = "";
+    myLibrary[changeReadStatusButton.getAttribute("bookIndex")].read
+      ? (newState = "read")
+      : (newState = "not read");
     let readStatus = displaybook.querySelector(".read");
-    readStatus.textContent = myLibrary[index].read;
+    readStatus.textContent = newState;
   });
-  displaybook.appendChild(changeReadStatusButton);
+  return changeReadStatusButton;
 }
 
 function makeDeletionButton(booksDisplay, displaybook, index) {
   let deleteButton = document.createElement("button");
   deleteButton.textContent = "Remove Book";
   deleteButton.setAttribute("bookIndex", index);
-  displaybook.appendChild(deleteButton);
-  myLibrary.splice(index, 1);
   deleteButton.addEventListener("click", () => {
+    myLibrary.splice(index, 1);
+
     booksDisplay.removeChild(
       booksDisplay.querySelector(`div[bookIndex='${index}']`)
     );
     if (myLibrary.length != 1) {
-      reorderDisplayItems();
+      reorderLibrary();
     }
   });
+  return deleteButton;
 }
 
-function AddBooksToDisplay(bookToAdd, index) {
+function AddBookToLibrary(bookToAdd, index) {
   let displaybook = document.createElement("div");
   displaybook.classList.add("Book");
   displaybook.setAttribute("bookIndex", index);
@@ -57,25 +64,38 @@ function AddBooksToDisplay(bookToAdd, index) {
     if (bookToAdd.hasOwnProperty(attribute)) {
       let child = document.createElement("div");
       child.classList.add(attribute);
-      child.innerText = `${attribute}: ${bookToAdd[attribute]}`;
+      if (attribute == "read") {
+        bookToAdd[attribute]
+          ? (child.innerText = `${attribute}`)
+          : (child.innerText = `Not ${attribute}`);
+      } else {
+        child.innerText = `${attribute}: ${bookToAdd[attribute]}`;
+      }
+
       displaybook.appendChild(child);
     }
   }
+
+  let bookButtons = document.createElement("div");
+  bookButtons.classList.add("bookButtons");
+  displaybook.appendChild(bookButtons);
+
+  let deleteButton = makeDeletionButton(booksDisplay, displaybook, index);
+  bookButtons.appendChild(deleteButton);
+
+  let ChangeReadStatusButton = makeChangeReadStatusButton(displaybook, index);
+  bookButtons.append(ChangeReadStatusButton);
+
   booksDisplay.append(displaybook);
 
-  makeChangeReadStatusButton(displaybook, index);
-  makeDeletionButton(booksDisplay, displaybook, index);
   /**/
 }
 
-function reorderDisplayItems() {
+function reorderLibrary() {
   let books = Array.from(booksDisplay.childNodes);
   myLibrary.forEach((book, index) => {
     books[index].setAttribute("bookIndex", index);
   });
-
-  console.log("my Library", myLibrary);
-  console.log("books display", booksDisplay);
 }
 
 form.addEventListener("submit", (event) => {
@@ -94,7 +114,7 @@ form.addEventListener("submit", (event) => {
   } else {
     warning.classList.add("invisible");
     const book = new Book(name, author, pages, read);
-    AddBooksToDisplay(book, myLibrary.length - 1);
+    AddBookToLibrary(book, myLibrary.length);
     myLibrary.push(book);
 
     form.reset();
