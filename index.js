@@ -15,7 +15,7 @@ let booksDisplay = document.querySelector(".BooksDisplay");
 
 let myLibrary = [];
 let book1 = new Book("harry Potter", "JK Rollings", 21, true);
-let book2 = new Book("The hobbit", "J. R. R. Tolkien", 45, true);
+let book2 = new Book("The hobbit", "J. R. R. Tolkien", 45, false);
 myLibrary.push(book1);
 AddBookToLibrary(book1, 0);
 myLibrary.push(book2);
@@ -105,15 +105,18 @@ form.addEventListener("submit", (event) => {
   const name = formData.get("name");
   const author = formData.get("author");
   const pages = formData.get("pages");
-  const read = document.querySelector('input[type="checkbox"]').checked
-    ? "read"
-    : "not read";
+  let read = "";
+  console.log(document.querySelector('input[type="checkbox"]').checked);
+  document.querySelector('input[type="checkbox"]').checked
+    ? (read = true)
+    : (read = false);
   let warning = document.querySelector(".warning");
   if (name == "" || author == "" || pages == "") {
     warning.classList.remove("invisible");
   } else {
     warning.classList.add("invisible");
     const book = new Book(name, author, pages, read);
+    console.log(book);
     AddBookToLibrary(book, myLibrary.length);
     myLibrary.push(book);
 
