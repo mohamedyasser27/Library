@@ -31,8 +31,8 @@ function makeChangeReadStatusButton(displaybook, index) {
     ].changeReadStatus();
     let newState = "";
     myLibrary[changeReadStatusButton.getAttribute("bookIndex")].read
-      ? (newState = "read")
-      : (newState = "not read");
+      ? (newState = "status: read")
+      : (newState = "status: not read");
     let readStatus = displaybook.querySelector(".read");
     readStatus.textContent = newState;
   });
@@ -43,11 +43,12 @@ function makeDeletionButton(booksDisplay, displaybook, index) {
   let deleteButton = document.createElement("button");
   deleteButton.textContent = "Remove Book";
   deleteButton.setAttribute("bookIndex", index);
-  deleteButton.addEventListener("click", () => {
+
+  deleteButton.addEventListener("click", (event) => {
     myLibrary.splice(index, 1);
 
     booksDisplay.removeChild(
-      booksDisplay.querySelector(`div[bookIndex='${index}']`)
+      booksDisplay.childNodes[event.target.getAttribute("bookIndex")]
     );
     if (myLibrary.length != 1) {
       reorderLibrary();
@@ -66,8 +67,8 @@ function AddBookToLibrary(bookToAdd, index) {
       child.classList.add(attribute);
       if (attribute == "read") {
         bookToAdd[attribute]
-          ? (child.innerText = `${attribute}`)
-          : (child.innerText = `Not ${attribute}`);
+          ? (child.innerText = `status: ${attribute}`)
+          : (child.innerText = `status: ${attribute}`);
       } else {
         child.innerText = `${attribute}: ${bookToAdd[attribute]}`;
       }
@@ -95,6 +96,14 @@ function reorderLibrary() {
   let books = Array.from(booksDisplay.childNodes);
   myLibrary.forEach((book, index) => {
     books[index].setAttribute("bookIndex", index);
+    booksDisplay.childNodes[index].childNodes[4].childNodes[0].setAttribute(
+      "bookIndex",
+      index
+    );
+    booksDisplay.childNodes[index].childNodes[4].childNodes[1].setAttribute(
+      "bookIndex",
+      index
+    );
   });
 }
 
@@ -106,7 +115,6 @@ form.addEventListener("submit", (event) => {
   const author = formData.get("author");
   const pages = formData.get("pages");
   let read = "";
-  console.log(document.querySelector('input[type="checkbox"]').checked);
   document.querySelector('input[type="checkbox"]').checked
     ? (read = true)
     : (read = false);
@@ -116,7 +124,6 @@ form.addEventListener("submit", (event) => {
   } else {
     warning.classList.add("invisible");
     const book = new Book(name, author, pages, read);
-    console.log(book);
     AddBookToLibrary(book, myLibrary.length);
     myLibrary.push(book);
 

@@ -18,6 +18,7 @@ html {
 body {
   align-items: center;
   background-color: #f3d2c1;
+  color: #001858;
   display: flex;
   flex-direction: column;
   font-family: "Montserrat";
@@ -29,10 +30,11 @@ body {
   background-color: #fef6e4;
   border-radius: 10px;
   border: 3px solid #172c66;
-  color: #172c66;
+  color: #001858;
+  font-weight: 500;
   margin-left: 10px;
   padding: 40px;
-  width: 200px;
+  width: 300px;
 }
 
 .BooksDisplay {
@@ -40,15 +42,26 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   width: 1000px;
+  margin-bottom: 20px;
+}
+
+.bookButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.bookButtons button {
+  margin-left: 10px;
 }
 
 button {
-  border: none;
-  border-radius: 3px;
   background-color: #f582ae;
+  border: 2px #001858 solid;
+  border-radius: 3px;
+  cursor: pointer;
+
   color: #001858;
   padding: 10px 30px;
-  cursor: pointer;
 }
 
 .invisible {
