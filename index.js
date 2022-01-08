@@ -1,3 +1,21 @@
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBPQhDM_53tugeB8I6TWCsOcjQresfiVkQ",
+
+  authDomain: "library-61798.firebaseapp.com",
+
+  projectId: "library-61798",
+
+  storageBucket: "library-61798.appspot.com",
+
+  messagingSenderId: "904105877431",
+
+  appId: "1:904105877431:web:d71d386f67f85ed3675232",
+};
+
+const app = initializeApp(firebaseConfig);
+
 function Book(name, author, pages, read) {
   this.name = name;
   this.author = author;
