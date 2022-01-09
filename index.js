@@ -1,21 +1,3 @@
-import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBPQhDM_53tugeB8I6TWCsOcjQresfiVkQ",
-
-  authDomain: "library-61798.firebaseapp.com",
-
-  projectId: "library-61798",
-
-  storageBucket: "library-61798.appspot.com",
-
-  messagingSenderId: "904105877431",
-
-  appId: "1:904105877431:web:d71d386f67f85ed3675232",
-};
-
-const app = initializeApp(firebaseConfig);
-
 function Book(name, author, pages, read) {
   this.name = name;
   this.author = author;
@@ -68,9 +50,7 @@ function makeDeletionButton(booksDisplay, displaybook, index) {
     booksDisplay.removeChild(
       booksDisplay.childNodes[event.target.getAttribute("bookIndex")]
     );
-    if (myLibrary.length != 1) {
-      reorderLibrary();
-    }
+    reorderLibrary();
   });
   return deleteButton;
 }
@@ -86,7 +66,7 @@ function AddBookToLibrary(bookToAdd, index) {
       if (attribute == "read") {
         bookToAdd[attribute]
           ? (child.innerText = `status: ${attribute}`)
-          : (child.innerText = `status: ${attribute}`);
+          : (child.innerText = `status: Not ${attribute}`);
       } else {
         child.innerText = `${attribute}: ${bookToAdd[attribute]}`;
       }
@@ -136,17 +116,12 @@ form.addEventListener("submit", (event) => {
   document.querySelector('input[type="checkbox"]').checked
     ? (read = true)
     : (read = false);
-  let warning = document.querySelector(".warning");
-  if (name == "" || author == "" || pages == "") {
-    warning.classList.remove("invisible");
-  } else {
-    warning.classList.add("invisible");
-    const book = new Book(name, author, pages, read);
-    AddBookToLibrary(book, myLibrary.length);
-    myLibrary.push(book);
 
-    form.reset();
-  }
+  const book = new Book(name, author, pages, read);
+  AddBookToLibrary(book, myLibrary.length);
+  myLibrary.push(book);
+
+  form.reset();
 });
 
 submitBtn.addEventListener("submit", () => {
