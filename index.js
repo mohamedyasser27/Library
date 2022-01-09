@@ -1,5 +1,5 @@
-function Book(name, author, pages, read) {
-  this.name = name;
+function Book(title, author, pages, read) {
+  this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
@@ -109,7 +109,7 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
 
   let formData = new FormData(form);
-  const name = formData.get("name");
+  const title = formData.get("title");
   const author = formData.get("author");
   const pages = formData.get("pages");
   let read = "";
@@ -117,7 +117,7 @@ form.addEventListener("submit", (event) => {
     ? (read = true)
     : (read = false);
 
-  const book = new Book(name, author, pages, read);
+  const book = new Book(title, author, pages, read);
   AddBookToLibrary(book, myLibrary.length);
   myLibrary.push(book);
 
