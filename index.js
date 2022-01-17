@@ -13,6 +13,14 @@ let form = document.querySelector("form");
 let submitBtn = document.querySelector(".submit");
 let booksDisplay = document.querySelector(".BooksDisplay");
 
+for (book in localStorage) {
+  if (localStorage.hasOwnProperty(book)) {
+    let bookObj = JSON.parse(localStorage[book]);
+    console.log(bookObj);
+    AddBookToLibrary(bookObj);
+  }
+}
+
 function makeChangeReadStatusButton(BookKey, bookInDisplay) {
   let changeReadStatusButton = document.createElement("button");
   changeReadStatusButton.textContent = "change Read Status";
