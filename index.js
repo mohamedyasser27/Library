@@ -13,96 +13,72 @@ let form = document.querySelector("form");
 let submitBtn = document.querySelector(".submit");
 let booksDisplay = document.querySelector(".BooksDisplay");
 
-let myLibrary = [];
-let book1 = new Book("harry Potter", "JK Rollings", 21, true);
-let book2 = new Book("The hobbit", "J. R. R. Tolkien", 45, false);
-myLibrary.push(book1);
-AddBookToLibrary(book1, 0);
-myLibrary.push(book2);
-AddBookToLibrary(book2, 1);
-
-function makeChangeReadStatusButton(displaybook, index) {
+function makeChangeReadStatusButton(BookKey, bookInDisplay) {
   let changeReadStatusButton = document.createElement("button");
   changeReadStatusButton.textContent = "change Read Status";
-  changeReadStatusButton.setAttribute("bookIndex", index);
   changeReadStatusButton.addEventListener("click", () => {
-    myLibrary[
-      changeReadStatusButton.getAttribute("bookIndex")
-    ].changeReadStatus();
-    let newState = "";
-    myLibrary[changeReadStatusButton.getAttribute("bookIndex")].read
-      ? (newState = "status: read")
-      : (newState = "status: not read");
-    let readStatus = displaybook.querySelector(".read");
-    readStatus.textContent = newState;
+    let bookObject = JSON.parse(localStorage[BookKey]);
+    if (bookObject.read == true) {
+      bookInDisplay.children[3].textContent = "status: Not read";
+      bookObject.read = false;
+    } else {
+      bookInDisplay.children[3].textContent = "status: read";
+      bookObject.read = true;
+    }
+    localStorage[BookKey] = JSON.stringify(bookObject);
   });
   return changeReadStatusButton;
 }
 
-function makeDeletionButton(booksDisplay, displaybook, index) {
-  let deleteButton = document.createElement("button");
-  deleteButton.textContent = "Remove Book";
-  deleteButton.setAttribute("bookIndex", index);
-
-  deleteButton.addEventListener("click", (event) => {
-    myLibrary.splice(index, 1);
-
-    booksDisplay.removeChild(
-      booksDisplay.childNodes[event.target.getAttribute("bookIndex")]
-    );
-    reorderLibrary();
+function makeDeletionButton(deletedBooKey, deletedBook) {
+  let button = document.createElement("button");
+  button.textContent = "delete book";
+  button.addEventListener("click", () => {
+    booksDisplay.removeChild(deletedBook);
+    localStorage.removeItem(deletedBooKey);
   });
-  return deleteButton;
+  return button;
 }
 
-function AddBookToLibrary(bookToAdd, index) {
-  let displaybook = document.createElement("div");
-  displaybook.classList.add("Book");
-  displaybook.setAttribute("bookIndex", index);
-  for (attribute in bookToAdd) {
-    if (bookToAdd.hasOwnProperty(attribute)) {
-      let child = document.createElement("div");
-      child.classList.add(attribute);
-      if (attribute == "read") {
-        bookToAdd[attribute]
-          ? (child.innerText = `status: ${attribute}`)
-          : (child.innerText = `status: Not ${attribute}`);
+function AddBookToLibrary(newBook) {
+  let bookInDisplay = document.createElement("div");
+  bookInDisplay.classList.add("Book");
+
+  let localStorageKey = `${newBook["title"]}${newBook["author"]}`;
+  let localStorageValue = JSON.stringify(newBook);
+  localStorage.setItem(localStorageKey, localStorageValue);
+
+  for (bookAttribute in newBook) {
+    if (newBook.hasOwnProperty(bookAttribute)) {
+      let bookAttributeDisplay = document.createElement("div");
+      bookAttributeDisplay.classList.add(bookAttribute);
+      if (bookAttribute == "read") {
+        newBook[bookAttribute]
+          ? (bookAttributeDisplay.innerText = `status: ${bookAttribute}`)
+          : (bookAttributeDisplay.innerText = `status: Not ${bookAttribute}`);
       } else {
-        child.innerText = `${attribute}: ${bookToAdd[attribute]}`;
+        bookAttributeDisplay.innerText = `${bookAttribute}: ${newBook[bookAttribute]}`;
       }
 
-      displaybook.appendChild(child);
+      bookInDisplay.appendChild(bookAttributeDisplay);
     }
   }
 
   let bookButtons = document.createElement("div");
   bookButtons.classList.add("bookButtons");
-  displaybook.appendChild(bookButtons);
-
-  let deleteButton = makeDeletionButton(booksDisplay, displaybook, index);
+  bookInDisplay.appendChild(bookButtons);
+  let deleteButton = makeDeletionButton(localStorageKey, bookInDisplay);
   bookButtons.appendChild(deleteButton);
 
-  let ChangeReadStatusButton = makeChangeReadStatusButton(displaybook, index);
+  let ChangeReadStatusButton = makeChangeReadStatusButton(
+    localStorageKey,
+    bookInDisplay
+  );
   bookButtons.append(ChangeReadStatusButton);
 
-  booksDisplay.append(displaybook);
+  booksDisplay.append(bookInDisplay);
 
   /**/
-}
-
-function reorderLibrary() {
-  let books = Array.from(booksDisplay.childNodes);
-  myLibrary.forEach((book, index) => {
-    books[index].setAttribute("bookIndex", index);
-    booksDisplay.childNodes[index].childNodes[4].childNodes[0].setAttribute(
-      "bookIndex",
-      index
-    );
-    booksDisplay.childNodes[index].childNodes[4].childNodes[1].setAttribute(
-      "bookIndex",
-      index
-    );
-  });
 }
 
 form.addEventListener("submit", (event) => {
@@ -118,8 +94,7 @@ form.addEventListener("submit", (event) => {
     : (read = false);
 
   const book = new Book(title, author, pages, read);
-  AddBookToLibrary(book, myLibrary.length);
-  myLibrary.push(book);
+  AddBookToLibrary(book);
 
   form.reset();
 });

@@ -41,7 +41,7 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  width: 1000px;
+  width: 75%;
   margin-bottom: 20px;
 }
 
