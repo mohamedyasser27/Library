@@ -90,7 +90,9 @@ button.theme2 {
 .ChangeThemeButton {
   background-color: var(--ChangeTheme);
 }
-
+.ChangeThemeButton.theme2 {
+  background-color: var(--ChangeTheme);
+}
 .CloseButton {
   align-self: flex-end;
   background-color: var(--CloseButton);
