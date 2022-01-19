@@ -1,10 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
 :root {
-  --BodyBG: #f3d2c1;
-  --BookCardBG: #fef6e4;
-  --ButtonBG: #f582ae;
-  --FontColor: #001858;
-  --BorderColor: #172c66;
+  --BodyBG: rgb(243, 210, 193);
+  --BookCardBG: rgb(254, 246, 228);
+  --ButtonBG: rgb(245, 130, 174);
+  --FontColor: rgb(0, 24, 88);
+  --BorderColor: rgb(23, 44, 102);
+  --CloseButton: rgb(252, 72, 104);
+
+  --BodyBG1: rgb(0, 70, 67);
+  --BookCardBG1: rgb(232, 228, 230);
+  --ButtonBG1: rgb(249, 188, 96);
+  --FontColor1: rgb(0, 30, 29);
+  --BorderColor1: rgb(0, 30, 29);
+  --CloseButton1: rgb(225, 97, 98);
+  --ChangeTheme: rgb(139, 211, 221);
 }
 html {
   box-sizing: border-box;
@@ -28,13 +37,16 @@ html {
 
 body {
   align-items: center;
-
   background-color: var(--BodyBG);
   color: var(--FontColor);
   display: flex;
   flex-direction: column;
   font-family: "Montserrat";
   min-height: 100vh;
+}
+body.theme2 {
+  background-color: var(--BodyBG1);
+  color: var(--FontColor1);
 }
 
 .BookCard {
@@ -44,6 +56,10 @@ body {
   font-weight: 500;
   margin-top: 1%;
   padding: 3%;
+}
+.BookCard.theme2 {
+  background-color: var(--BookCardBG1);
+  border: 3px solid var(--BorderColor1);
 }
 
 .BooksDisplay {
@@ -62,13 +78,25 @@ button {
   border-radius: 3px;
   color: var(--FontColor);
   cursor: pointer;
-  padding: 10px 20px;
   margin-right: 3px;
+  padding: 10px 20px;
 }
+
+button.theme2 {
+  background-color: var(--ButtonBG1);
+  border: 2px solid var(--BorderColor1);
+}
+
+.ChangeThemeButton {
+  background-color: var(--ChangeTheme);
+}
+
 .CloseButton {
-  background-color: #fc4868;
   align-self: flex-end;
-  width: 25%;
+  background-color: var(--CloseButton);
+}
+.theme2.CloseButton {
+  background-color: var(--CloseButton1);
 }
 
 .dim {
@@ -76,23 +104,33 @@ button {
 }
 
 .FormContainer {
-  display: flex;
-  flex-direction: column;
-  background-color: #fef6e4;
+  background-color: var(--BookCardBG);
   border-radius: 10px;
   border: 3px solid var(--BorderColor);
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15%;
   padding: 3%;
   position: absolute;
-  margin-top: 15%;
+}
+.FormContainer.theme2 {
+  background-color: var(--BookCardBG1);
+  border: 3px solid var(--BorderColor1);
 }
 
 .Header {
-  font-size: 50px;
-  left: 2px;
-  height: 50px;
-  position: fixed;
-  top: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0.5%;
+  width: 90%;
+}
+h1 {
+  color: #33272a;
+}
+
+h1.theme2 {
+  color: #fffffe;
 }
 
 input {
@@ -100,13 +138,16 @@ input {
   border: solid 2px var(--BorderColor);
   border-radius: 4px;
 }
+input.theme2 {
+  border: solid 2px var(--BorderColor1);
+}
 
 .invisible {
   display: none;
 }
 
 label {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .submit {

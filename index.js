@@ -12,7 +12,6 @@ let body = document.querySelector("body");
 let form = document.querySelector("form");
 let submitBtn = document.querySelector(".submit");
 let booksDisplay = document.querySelector(".BooksDisplay");
-let addBookButton = document.querySelector(".AddBookButton");
 let FormContainer = document.querySelector(".FormContainer");
 
 for (let book in localStorage) {
@@ -65,7 +64,6 @@ function AddBookToLibrary(newBook, loadflag) {
 function makeChangeReadStatusButton(bookObject, BookKey, bookInDisplay) {
   let changeReadStatusButton = document.createElement("button");
   changeReadStatusButton.textContent = "change Read Status";
-  console.log(bookObject.read);
 
   changeReadStatusButton.addEventListener("click", () => {
     bookObject.changeReadStatus();
@@ -116,6 +114,7 @@ submitBtn.addEventListener("submit", () => {
   form.submit();
 });
 
+let addBookButton = document.querySelector(".AddBookButton");
 addBookButton.onclick = () => {
   FormContainer.classList.toggle("invisible");
   FormContainer.classList.toggle("dim");
@@ -123,8 +122,27 @@ addBookButton.onclick = () => {
 };
 
 let FormCloseButton = document.querySelector(".CloseButton");
-console.log(FormCloseButton);
 FormCloseButton.addEventListener("click", () => {
   FormContainer.classList.toggle("invisible");
   FormContainer.classList.toggle("dim");
+});
+
+let ChangeThemeButton = document.querySelector(".ChangeThemeButton");
+
+ChangeThemeButton.addEventListener("click", () => {
+  body.classList.toggle("theme2");
+  FormContainer.classList.toggle("theme2");
+  FormCloseButton.classList.toggle("theme2");
+  Array.from(document.querySelectorAll("input")).forEach((input) => {
+    input.classList.toggle("theme2");
+  });
+  Array.from(document.querySelectorAll(".BookCard")).forEach((BookCard) => {
+    BookCard.classList.toggle("theme2");
+  });
+  Array.from(document.querySelectorAll("button")).forEach((button) => {
+    button.classList.toggle("theme2");
+  });
+  Array.from(document.querySelectorAll("h1")).forEach((head) => {
+    head.classList.toggle("theme2");
+  });
 });
