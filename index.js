@@ -12,50 +12,24 @@ let body = document.querySelector("body");
 let form = document.querySelector("form");
 let submitBtn = document.querySelector(".submit");
 let booksDisplay = document.querySelector(".BooksDisplay");
+let addBookButton = document.querySelector(".AddBookButton");
+let FormContainer = document.querySelector(".FormContainer");
 
-for (book in localStorage) {
+for (let book in localStorage) {
   if (localStorage.hasOwnProperty(book)) {
     let bookObj = JSON.parse(localStorage[book]);
-    console.log(bookObj);
-    AddBookToLibrary(bookObj);
+    bookObj.__proto__ = Book.prototype;
+    AddBookToLibrary(bookObj, 0);
   }
 }
-
-function makeChangeReadStatusButton(BookKey, bookInDisplay) {
-  let changeReadStatusButton = document.createElement("button");
-  changeReadStatusButton.textContent = "change Read Status";
-  changeReadStatusButton.addEventListener("click", () => {
-    let bookObject = JSON.parse(localStorage[BookKey]);
-    if (bookObject.read == true) {
-      bookInDisplay.children[3].textContent = "status: Not read";
-      bookObject.read = false;
-    } else {
-      bookInDisplay.children[3].textContent = "status: read";
-      bookObject.read = true;
-    }
-    localStorage[BookKey] = JSON.stringify(bookObject);
-  });
-  return changeReadStatusButton;
-}
-
-function makeDeletionButton(deletedBooKey, deletedBook) {
-  let button = document.createElement("button");
-  button.textContent = "delete book";
-  button.addEventListener("click", () => {
-    booksDisplay.removeChild(deletedBook);
-    localStorage.removeItem(deletedBooKey);
-  });
-  return button;
-}
-
-function AddBookToLibrary(newBook) {
+function AddBookToLibrary(newBook, loadflag) {
   let bookInDisplay = document.createElement("div");
-  bookInDisplay.classList.add("Book");
-
+  bookInDisplay.classList.add("BookCard");
   let localStorageKey = `${newBook["title"]}${newBook["author"]}`;
   let localStorageValue = JSON.stringify(newBook);
-  localStorage.setItem(localStorageKey, localStorageValue);
-
+  if (loadflag) {
+    localStorage.setItem(localStorageKey, localStorageValue);
+  }
   for (bookAttribute in newBook) {
     if (newBook.hasOwnProperty(bookAttribute)) {
       let bookAttributeDisplay = document.createElement("div");
@@ -79,14 +53,40 @@ function AddBookToLibrary(newBook) {
   bookButtons.appendChild(deleteButton);
 
   let ChangeReadStatusButton = makeChangeReadStatusButton(
+    newBook,
     localStorageKey,
     bookInDisplay
   );
   bookButtons.append(ChangeReadStatusButton);
 
   booksDisplay.append(bookInDisplay);
+}
 
-  /**/
+function makeChangeReadStatusButton(bookObject, BookKey, bookInDisplay) {
+  let changeReadStatusButton = document.createElement("button");
+  changeReadStatusButton.textContent = "change Read Status";
+  console.log(bookObject.read);
+
+  changeReadStatusButton.addEventListener("click", () => {
+    bookObject.changeReadStatus();
+    localStorage[BookKey] = JSON.stringify(bookObject);
+    if (bookObject.read) {
+      bookInDisplay.children[3].textContent = "status: read";
+    } else {
+      bookInDisplay.children[3].textContent = "status: Not read";
+    }
+  });
+  return changeReadStatusButton;
+}
+
+function makeDeletionButton(deletedBooKey, deletedBook) {
+  let button = document.createElement("button");
+  button.textContent = "delete book";
+  button.addEventListener("click", () => {
+    booksDisplay.removeChild(deletedBook);
+    localStorage.removeItem(deletedBooKey);
+  });
+  return button;
 }
 
 form.addEventListener("submit", (event) => {
@@ -102,11 +102,29 @@ form.addEventListener("submit", (event) => {
     : (read = false);
 
   const book = new Book(title, author, pages, read);
-  AddBookToLibrary(book);
+
+  if (title && author && pages) {
+    AddBookToLibrary(book, 1);
+  }
 
   form.reset();
+  FormContainer.classList.toggle("invisible");
+  FormContainer.classList.toggle("dim");
 });
 
 submitBtn.addEventListener("submit", () => {
   form.submit();
+});
+
+addBookButton.onclick = () => {
+  FormContainer.classList.toggle("invisible");
+  FormContainer.classList.toggle("dim");
+  FormContainer.focus();
+};
+
+let FormCloseButton = document.querySelector(".CloseButton");
+console.log(FormCloseButton);
+FormCloseButton.addEventListener("click", () => {
+  FormContainer.classList.toggle("invisible");
+  FormContainer.classList.toggle("dim");
 });

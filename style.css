@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
-
+:root {
+  --BodyBG: #f3d2c1;
+  --BookCardBG: #fef6e4;
+  --ButtonBG: #f582ae;
+  --FontColor: #001858;
+  --BorderColor: #172c66;
+}
 html {
   box-sizing: border-box;
 }
@@ -15,63 +21,83 @@ html {
   padding: 0;
 }
 
+.AddBookButton {
+  margin-bottom: 20px;
+  margin-top: 70px;
+}
+
 body {
   align-items: center;
-  background-color: #f3d2c1;
-  color: #001858;
+
+  background-color: var(--BodyBG);
+  color: var(--FontColor);
   display: flex;
   flex-direction: column;
   font-family: "Montserrat";
-  justify-content: center;
   min-height: 100vh;
 }
 
-.Book {
-  background-color: #fef6e4;
+.BookCard {
+  background-color: var(--BookCardBG);
   border-radius: 10px;
-  border: 3px solid #172c66;
-  color: #001858;
+  border: 3px solid var(--BorderColor);
   font-weight: 500;
-  margin-left: 10px;
-  padding: 40px;
-  width: 300px;
+  margin-top: 1%;
+  padding: 3%;
 }
 
 .BooksDisplay {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  width: 75%;
-  margin-bottom: 20px;
-}
-
-.bookButtons {
+  align-self: center;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-}
-.bookButtons button {
-  margin-left: 10px;
+  flex-wrap: wrap;
+  gap: 1%;
+  margin-left: 1%;
+  width: 90%;
 }
 
 button {
-  background-color: #f582ae;
-  border: 2px #001858 solid;
+  background-color: var(--ButtonBG);
+  border: 2px solid var(--BorderColor);
   border-radius: 3px;
+  color: var(--FontColor);
   cursor: pointer;
-
-  color: #001858;
-  padding: 10px 30px;
+  padding: 10px 20px;
+  margin-right: 3px;
+}
+.CloseButton {
+  background-color: #fc4868;
+  align-self: flex-end;
+  width: 25%;
 }
 
-h1 {
-  margin-bottom: 30px;
-  text-decoration: underline;
+.dim {
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4);
+}
+
+.FormContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #fef6e4;
+  border-radius: 10px;
+  border: 3px solid var(--BorderColor);
+  font-weight: 500;
+  padding: 3%;
+  position: absolute;
+  margin-top: 15%;
+}
+
+.Header {
+  font-size: 50px;
+  left: 2px;
+  height: 50px;
+  position: fixed;
+  top: 2px;
 }
 
 input {
   background-color: transparent;
-  border: #001858 solid 2px;
+  border: solid 2px var(--BorderColor);
   border-radius: 4px;
 }
 
