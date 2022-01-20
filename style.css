@@ -97,7 +97,7 @@ button.theme2 {
   align-self: flex-end;
   background-color: var(--CloseButton);
 }
-.theme2.CloseButton {
+.CloseButton.theme2 {
   background-color: var(--CloseButton1);
 }
 

@@ -13,6 +13,9 @@ let form = document.querySelector("form");
 let submitBtn = document.querySelector(".submit");
 let booksDisplay = document.querySelector(".BooksDisplay");
 let FormContainer = document.querySelector(".FormContainer");
+let FormCloseButton = document.querySelector(".CloseButton");
+
+let theme2Flag = false;
 
 for (let book in localStorage) {
   if (localStorage.hasOwnProperty(book)) {
@@ -24,6 +27,9 @@ for (let book in localStorage) {
 function AddBookToLibrary(newBook, loadflag) {
   let bookInDisplay = document.createElement("div");
   bookInDisplay.classList.add("BookCard");
+  if (theme2Flag) {
+    bookInDisplay.classList.add("theme2");
+  }
   let localStorageKey = `${newBook["title"]}${newBook["author"]}`;
   let localStorageValue = JSON.stringify(newBook);
   if (loadflag) {
@@ -57,12 +63,14 @@ function AddBookToLibrary(newBook, loadflag) {
     bookInDisplay
   );
   bookButtons.append(ChangeReadStatusButton);
-
   booksDisplay.append(bookInDisplay);
 }
 
 function makeChangeReadStatusButton(bookObject, BookKey, bookInDisplay) {
   let changeReadStatusButton = document.createElement("button");
+  if (theme2Flag) {
+    changeReadStatusButton.classList.add("theme2");
+  }
   changeReadStatusButton.textContent = "change Read Status";
 
   changeReadStatusButton.addEventListener("click", () => {
@@ -79,6 +87,9 @@ function makeChangeReadStatusButton(bookObject, BookKey, bookInDisplay) {
 
 function makeDeletionButton(deletedBooKey, deletedBook) {
   let button = document.createElement("button");
+  if (theme2Flag) {
+    button.classList.add("theme2");
+  }
   button.textContent = "delete book";
   button.addEventListener("click", () => {
     booksDisplay.removeChild(deletedBook);
@@ -106,8 +117,8 @@ form.addEventListener("submit", (event) => {
   }
 
   form.reset();
-  FormContainer.classList.toggle("invisible");
-  FormContainer.classList.toggle("dim");
+
+  FormCloseButton.click();
 });
 
 submitBtn.addEventListener("submit", () => {
@@ -116,33 +127,42 @@ submitBtn.addEventListener("submit", () => {
 
 let addBookButton = document.querySelector(".AddBookButton");
 addBookButton.onclick = () => {
-  FormContainer.classList.toggle("invisible");
-  FormContainer.classList.toggle("dim");
+  classToggle("invisible", FormContainer);
+  classToggle("dim", FormContainer);
   FormContainer.focus();
 };
 
-let FormCloseButton = document.querySelector(".CloseButton");
 FormCloseButton.addEventListener("click", () => {
-  FormContainer.classList.toggle("invisible");
-  FormContainer.classList.toggle("dim");
+  classToggle("invisible", FormContainer);
+  classToggle("dim", FormContainer);
 });
 
 let ChangeThemeButton = document.querySelector(".ChangeThemeButton");
 
 ChangeThemeButton.addEventListener("click", () => {
-  body.classList.toggle("theme2");
-  FormContainer.classList.toggle("theme2");
-  FormCloseButton.classList.toggle("theme2");
-  Array.from(document.querySelectorAll("input")).forEach((input) => {
-    input.classList.toggle("theme2");
-  });
-  Array.from(document.querySelectorAll(".BookCard")).forEach((BookCard) => {
-    BookCard.classList.toggle("theme2");
-  });
-  Array.from(document.querySelectorAll("button")).forEach((button) => {
-    button.classList.toggle("theme2");
-  });
-  Array.from(document.querySelectorAll("h1")).forEach((head) => {
-    head.classList.toggle("theme2");
-  });
+  if (theme2Flag == false) {
+    theme2Flag = true;
+  } else {
+    theme2Flag = false;
+  }
+
+  classToggle("theme2", body);
+  classToggle("theme2", FormContainer);
+  classToggle("theme2", FormCloseButton);
+  classToggle("theme2", Array.from(document.querySelectorAll("input")));
+  classToggle("theme2", Array.from(document.querySelectorAll(".BookCard")));
+  classToggle("theme2", Array.from(document.querySelectorAll("h1")));
+  classToggle("theme2", Array.from(document.querySelectorAll("button")));
 });
+
+function classToggle(clas, ...elements) {
+  elements.forEach((element) => {
+    if (Array.isArray(element)) {
+      element.forEach((e) => {
+        e.classList.toggle(clas);
+      });
+    } else {
+      element.classList.toggle(clas);
+    }
+  });
+}
