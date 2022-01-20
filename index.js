@@ -17,13 +17,16 @@ let FormCloseButton = document.querySelector(".CloseButton");
 
 let theme2Flag = false;
 
-for (let book in localStorage) {
-  if (localStorage.hasOwnProperty(book)) {
-    let bookObj = JSON.parse(localStorage[book]);
-    bookObj.__proto__ = Book.prototype;
-    AddBookToLibrary(bookObj, 0);
+function loadStoredBooks() {
+  for (let book in localStorage) {
+    if (localStorage.hasOwnProperty(book)) {
+      let bookObj = JSON.parse(localStorage[book]);
+      bookObj.__proto__ = Book.prototype;
+      AddBookToLibrary(bookObj, 0);
+    }
   }
 }
+
 function AddBookToLibrary(newBook, loadflag) {
   let bookInDisplay = document.createElement("div");
   bookInDisplay.classList.add("BookCard");
@@ -146,23 +149,32 @@ ChangeThemeButton.addEventListener("click", () => {
     theme2Flag = false;
   }
 
-  classToggle("theme2", body);
-  classToggle("theme2", FormContainer);
-  classToggle("theme2", FormCloseButton);
-  classToggle("theme2", Array.from(document.querySelectorAll("input")));
-  classToggle("theme2", Array.from(document.querySelectorAll(".BookCard")));
-  classToggle("theme2", Array.from(document.querySelectorAll("h1")));
-  classToggle("theme2", Array.from(document.querySelectorAll("button")));
+  let themeRelatedElements = [
+    body,
+    FormContainer,
+    FormCloseButton,
+    loadElementsIntoArray("input"),
+    loadElementsIntoArray(".BookCard"),
+    loadElementsIntoArray("h1"),
+    loadElementsIntoArray("button"),
+  ];
+  themeRelatedElements.forEach((themee) => {
+    classToggle("theme2", themee);
+  });
 });
 
-function classToggle(clas, ...elements) {
+function loadElementsIntoArray(elementSelector) {
+  return Array.from(document.querySelectorAll(elementSelector));
+}
+
+function classToggle(AddedClass, ...elements) {
   elements.forEach((element) => {
     if (Array.isArray(element)) {
-      element.forEach((e) => {
-        e.classList.toggle(clas);
+      element.forEach((member) => {
+        member.classList.toggle(AddedClass);
       });
     } else {
-      element.classList.toggle(clas);
+      element.classList.toggle(AddedClass);
     }
   });
 }
