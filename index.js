@@ -27,6 +27,8 @@ function loadStoredBooks() {
   }
 }
 
+loadStoredBooks();
+
 function AddBookToLibrary(newBook, loadflag) {
   let bookInDisplay = document.createElement("div");
   bookInDisplay.classList.add("BookCard");
