@@ -31,7 +31,7 @@ This is a project i built for the odin project foundation path.
 
 Your Name - [muhammed_Y272](https://twitter.com/muhammed_Y272)
 
-Project Link: [Etch-A-Sketch](https://mohamedyasser27.github.io/Etch-A-Sketch/)
+Project Link: [Library](https://mohamedyasser27.github.io/Library/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
