@@ -23,6 +23,7 @@ This is a project i built for the odin project foundation path.
 - [x] add persistant storage
 - [ ] add API support to add images
 - [ ] add multiple themes
+- [ ] add load function to window.onload()
 - [ ] refactor the code
 
 <p align="right">(<a href="#top">back to top</a>)</p>
